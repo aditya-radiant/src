@@ -49,7 +49,11 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  SetPosition.msg
+  DynamixelPos.msg
+  DynamixelPosList.msg
+  DynamixelState.msg
+  DynamixelStateList.msg
+  DynamixelTorqueEnable.msg
 )
 
 ## Generate services in the 'srv' folder
