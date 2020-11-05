@@ -1,0 +1,7 @@
+<launch>
+    <node name="dynamixel_control_node" pkg="dynamixel_control" type="dynamixel_control_node.py" ns="DXL2" output="screen">
+      <param name="dynamixel_id" value="2"/>
+      <param name="dynamixel_baudrate" value="2000000"/>
+      <param name="dynamixel_device" value="/dev/ttyUSB0"/>
+    </node>
+</launch>
