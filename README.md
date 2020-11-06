@@ -4,7 +4,7 @@ before use this repo, config to your computer [configuration](https://github.com
 
 ## Road map 
 - [x] Servo Test
-- [ ] Multiple Servo control
+- [x] Multiple Servo control
 - [ ] Invers Kinematik
 - [ ] Invers Kinematik test
 - [ ] Path Planning
