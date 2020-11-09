@@ -26,7 +26,7 @@ include_directories(
 )
 
 install(PROGRAMS
-    src/node/ik_solver.py
+    src/ik_solver.py
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 
 )

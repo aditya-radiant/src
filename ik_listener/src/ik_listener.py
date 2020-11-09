@@ -5,7 +5,7 @@ import rospy
 from std_msgs.msg import String,Float64MultiArray
 
 def ik_solver_callback(msg):
-    rospy.loginfo('Listener menerima data : ', msg.data)
+    rospy.loginfo('Listener menerima data : ', data_to_send)
  
 
 

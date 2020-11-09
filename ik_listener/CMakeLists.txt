@@ -24,6 +24,6 @@ include_directories(
 
 #executable 
 install(PROGRAMS
-    src/node/ik_listener.py
+    src/ik_listener.py
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

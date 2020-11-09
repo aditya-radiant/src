@@ -4,4 +4,6 @@
       <param name="dynamixel_device" value="/dev/ttyUSB0"/>
       <param name="dynamixel_protocol" value="2.0"/>
     </node>
+
+    <node name="inverse_kinematics_node" pkg="inverse_kinematics" type="inverse_kinematics_node.py" output="screen"/>
 </launch>
