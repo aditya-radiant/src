@@ -1,6 +1,6 @@
 # Configuration
 1. `mkdir Bascorro_ws`
-2. `cd Bascorro_ws
+2. `cd Bascorro_ws`
 3. `git clone https://github.com/EWS-Bascorro/Bascorro_ws.git`
 4. `cd ..`
 5. `catkin_make`
