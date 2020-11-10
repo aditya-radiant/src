@@ -6,7 +6,7 @@ before use this repo, config to your computer [configuration](https://github.com
 - [x] Servo Test
 - [x] Multiple Servo control
 - [x] Invers Kinematik
-- [ ] Invers Kinematik test
+- [x] Invers Kinematik test
 - [ ] Path Planning
 - [ ] Uji Jalan
 - [ ] Running Test
