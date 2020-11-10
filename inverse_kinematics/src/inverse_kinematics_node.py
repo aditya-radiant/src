@@ -13,58 +13,58 @@ dynamixelPosList_pub = rospy.Publisher('set_position', DynamixelPosList, queue_s
 
 def r_leg_ik(koordinatX, koordinatY,  koordinatZ, rotate):
     x = koordinatX
-    y = koordinatY
-    z = koordinatZ
+    y = koordinatZ
+    z = koordinatY
 
     try:
         A = (x**2 + y**2 + z**2 - l1**2 - l2**2) /(2*l1*l2)
         B = math.sqrt(1-(A**2))
         tetha3 = math.degrees(math.acos(A))
         
-        buff1 = l2*math.cos(tetha3) + l1
+        buff1 = l2*math.cos(math.radians(tetha3)) + l1
         buff2 = math.sqrt(x**2 + y**2)
-        buff3 = l2*math.sin(tetha3)
+        buff3 = l2*math.sin(math.radians(tetha3))
 
         C = math.degrees(math.atan2(buff2,z))
         D = math.degrees(math.atan2(buff3,buff1))
         tetha2 = C - D
-        tetha1 = math.degrees(math.atan2(x,math.sqrt(x**2 + y**2 + z**2)))
-        tetha4 = tetha3 + tetha2
+        tetha1 = math.degrees(math.atan2(x,y))
+        tetha4 = tetha3 + tetha2 - 90
         tetha6 = rotate
         tetha5 = tetha1
-        return [tetha1+180, tetha2+180, -tetha3+180, tetha4+180, tetha5+180, tetha6+180]
+        return [tetha1+180, 90 + tetha2, -tetha3+180, tetha4+180, tetha5+180, tetha6+180]
 
     except ValueError:
         rospy.logerr('[IK_Target] Value Error')
-        return [0, 0, 0, 0, 0, 0]
+        return [180, 180, 180, 180, 180, 180]
     
 
 def l_leg_ik(koordinatX, koordinatY,  koordinatZ, rotate):
     x = koordinatX
-    y = koordinatY
-    z = koordinatZ
+    y = koordinatZ
+    z = koordinatY
 
     try:
         A = (x**2 + y**2 + z**2 - l1**2 - l2**2) /(2*l1*l2)
         B = math.sqrt(1-(A**2))
         tetha3 = math.degrees(math.acos(A))
         
-        buff1 = l2*math.cos(tetha3) + l1
+        buff1 = l2*math.cos(math.radians(tetha3)) + l1
         buff2 = math.sqrt(x**2 + y**2)
-        buff3 = l2*math.sin(tetha3)
+        buff3 = l2*math.sin(math.radians(tetha3))
 
         C = math.degrees(math.atan2(buff2,z))
         D = math.degrees(math.atan2(buff3,buff1))
         tetha2 = C - D
-        tetha1 = math.degrees(math.atan2(x,math.sqrt(x**2 + y**2 + z**2)))
-        tetha4 = tetha3 + tetha2
+        tetha1 = math.degrees(math.atan2(x,y))
+        tetha4 = tetha3 + tetha2 - 90
         tetha6 = rotate
         tetha5 = tetha1
-        return [-tetha1+180, -tetha2+180, tetha3+180, -tetha4+180, tetha5+180, -tetha6+180]
+        return [-tetha1+180, 270 - tetha2, tetha3+180, -tetha4+180, -tetha5+180, -tetha6+180]
 
     except ValueError:
         rospy.logerr('[IK_Target] Value Error')
-        return [0, 0, 0, 0, 0, 0]
+        return [180, 180, 180, 180, 180, 180]
 
 
 def r_leg_ik_handler(data):
