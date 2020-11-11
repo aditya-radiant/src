@@ -7,6 +7,7 @@ before use this repo, config this code into your computer [configuration](https:
 - [x] Multiple Servo control
 - [x] Invers Kinematik
 - [x] Invers Kinematik test
-- [ ] Path Planning
+- [x] Path Planning Std
+- [ ] Path Planning Walking Gait 
 - [ ] Uji Jalan
 - [ ] Running Test
