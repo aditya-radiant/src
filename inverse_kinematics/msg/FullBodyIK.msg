@@ -1,0 +1,2 @@
+inverse_kinematics/IKTarget right_leg
+inverse_kinematics/IKTarget left_leg
