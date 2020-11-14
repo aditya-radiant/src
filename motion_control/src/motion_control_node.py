@@ -14,7 +14,7 @@ step_periode = 0.25  # second
 calc_rate = 60.0    # hz
 step_distance = 8.0 # cm
 side_distance = 3.0 # cm
-rotate_distance = 2g0 # degree
+rotate_distance = 20 # degree
 
 motion_state = 0    #start_pose
 
