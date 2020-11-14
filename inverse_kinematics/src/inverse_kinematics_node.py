@@ -7,6 +7,8 @@ from inverse_kinematics.msg import IKTarget, FullBodyIK
 
 l1 = 13.9
 l2 = 14.6
+offset = 13
+offsetSide = 5
 
 dynamixelPosList_pub = rospy.Publisher('set_position', DynamixelPosList, queue_size=10)
 
@@ -28,11 +30,12 @@ def r_leg_ik(koordinatX, koordinatY,  koordinatZ, rotate):
         C = math.degrees(math.atan2(buff2,z))
         D = math.degrees(math.atan2(buff3,buff1))
         tetha2 = C - D
-        tetha1 = math.degrees(math.atan2(x,y))
+        tetha5 = math.degrees(math.atan2(x,y))
+        tetha1 = tetha5
         tetha4 = tetha3 + tetha2 - 90
         tetha6 = rotate
-        tetha5 = tetha1
-        return [tetha1+180, 90 + tetha2, -tetha3+180, tetha4+180, tetha5+180, tetha6+180]
+	
+        return [tetha1+180+offsetSide, 90-offset+tetha2, -tetha3+180, tetha4+180, tetha5+180+offsetSide, tetha6+180]
 
     except ValueError:
         rospy.logerr('[IK_Target] Value Error')
@@ -56,11 +59,12 @@ def l_leg_ik(koordinatX, koordinatY,  koordinatZ, rotate):
         C = math.degrees(math.atan2(buff2,z))
         D = math.degrees(math.atan2(buff3,buff1))
         tetha2 = C - D
-        tetha1 = math.degrees(math.atan2(x,y))
+        tetha5 = math.degrees(math.atan2(x,y))
+        tetha1 = tetha5
         tetha4 = tetha3 + tetha2 - 90
         tetha6 = rotate
-        tetha5 = tetha1
-        return [-tetha1+180, 270 - tetha2, tetha3+180, -tetha4+180, -tetha5+180, -tetha6+180]
+
+        return [-tetha1+180-offsetSide, 270+offset-tetha2, tetha3+180, -tetha4+180, -tetha5+180-offsetSide, -tetha6+180]
 
     except ValueError:
         rospy.logerr('[IK_Target] Value Error')
