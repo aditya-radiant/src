@@ -8,6 +8,7 @@ before use this repo, config this code into your computer [configuration](https:
 - [x] Invers Kinematik
 - [x] Invers Kinematik test
 - [x] Path Planning Std
-- [ ] Path Planning Walking Gait 
-- [ ] Uji Jalan
+- [x] Path Planning Walking Gait 
+- [x] Uji Jalan
+- [x] Perbanyak gait .... masih proses
 - [ ] Running Test
