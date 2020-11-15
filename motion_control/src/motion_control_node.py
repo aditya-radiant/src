@@ -2,21 +2,22 @@
 import rospy, math
 import numpy as np
 from time import sleep
-from std_msgs.msg import Bool, UInt8
+from std_msgs.msg import Bool, UInt8, UInt16
 from dynamixel_control.msg import DynamixelPosList
 from inverse_kinematics.msg import FullBodyIK
+from motion_control.msg import walkParam
 
 rospy.init_node('motion_control_node')
 fullBodyIK_pub = rospy.Publisher('full_body_target', FullBodyIK, queue_size=10)
 
-walk_height = 5.0   # cm
-step_periode = 0.25  # second
-calc_rate = 60.0    # hz
-step_distance = 8.0 # cm
-side_distance = 3.0 # cm
-rotate_distance = 20 # degree
+walk_height = 5.0   	# cm
+step_periode = 0.25  	# second
+calc_rate = 60.0    	# hz
+step_distance = 8.0 	# cm
+side_distance = 3.0 	# cm
+rotate_angle = 15.0 	# degree
 
-motion_state = 0    #start_pose
+motion_state = 0    	#start_pose
 
 
 def walkingSinZ(t):
@@ -88,12 +89,12 @@ def turnRight():
     for t in T:         # right foot up
         z = walkingSinZ(t)
         y = t/step_periode * step_distance
-	rotate = t/step_periode * rotate_distance
+        rotate = t/step_periode * rotate_angle
         dataPub = FullBodyIK()
         dataPub.right_leg.x = side_distance
         dataPub.right_leg.y = y
         dataPub.right_leg.z = 26.0 - z
-	dataPub.right_leg.rotate = rotate
+        dataPub.right_leg.rotate = rotate
         dataPub.left_leg.x = -side_distance
         dataPub.left_leg.z = 26.0
         fullBodyIK_pub.publish(dataPub)
@@ -112,12 +113,14 @@ def turnRight():
     for t in T:         # left foot up
         z = walkingSinZ(t)
         y = t/step_periode * step_distance
+        rotate = t/step_periode * rotate_angle
         dataPub = FullBodyIK()
         dataPub.right_leg.x = -side_distance
         dataPub.right_leg.z = 26.0
         dataPub.left_leg.x = side_distance
         dataPub.left_leg.y = y
         dataPub.left_leg.z = 26.0 - z
+        dataPub.left_leg.rotate = -rotate/2
         fullBodyIK_pub.publish(dataPub)
         sleep(1/calc_rate)
 
@@ -136,10 +139,12 @@ def turnLeft():
     for t in T:         # right foot up
         z = walkingSinZ(t)
         y = t/step_periode * step_distance
+	rotate = t/step_periode * rotate_angle
         dataPub = FullBodyIK()
         dataPub.right_leg.x = side_distance
         dataPub.right_leg.y = y
         dataPub.right_leg.z = 26.0 - z
+	dataPub.right_leg.rotate = -rotate/2
         dataPub.left_leg.x = -side_distance
         dataPub.left_leg.z = 26.0
         fullBodyIK_pub.publish(dataPub)
@@ -158,7 +163,7 @@ def turnLeft():
     for t in T:         # left foot up
         z = walkingSinZ(t)
         y = t/step_periode * step_distance
-	rotate = t/step_periode * rotate_distance
+	rotate = t/step_periode * rotate_angle
         dataPub = FullBodyIK()
         dataPub.right_leg.x = -side_distance
         dataPub.right_leg.z = 26.0
@@ -182,7 +187,6 @@ def walkSteady():
         fullBodyIK_pub.publish(dataPub)
         sleep(1/calc_rate)
 
-	
     for t in T:         # right foot up
         z = walkingSinZ(t)
         dataPub = FullBodyIK()
@@ -213,7 +217,7 @@ def walkSteady():
         fullBodyIK_pub.publish(dataPub)
         sleep(1/calc_rate)
 
-
+s
 def startPose():
     dataPub = FullBodyIK()
     dataPub.right_leg.z = 26.0
@@ -228,17 +232,27 @@ def setMotionHandler(data):
     rospy.loginfo('motion: ' + str(data.data))
 
 
+def setWalkParamHandler(data):
+    global walk_height, step_distance, step_periode, rotate_angle
+    step_distance = data.step_distance
+    walk_height = data.step_height
+    step_periode = data.step_periode
+    rotate_angle = data.turn_angle
+
+
 if __name__ == '__main__':
     rospy.Subscriber('set_motion', UInt8, setMotionHandler)
+    rospy.Subscriber('set_walkParam', walkParam, setWalkParamHandler)
+
 
     while not rospy.is_shutdown():
         if motion_state == 0:
             startPose()
         elif motion_state == 1:
-	    walkSteady()
+            walkSteady()
         elif motion_state == 2:
             startWalk()
-	elif motion_state == 3:
+        elif motion_state == 3:
             turnRight()
-	elif motion_state == 4:
+        elif motion_state == 4:
             turnLeft()

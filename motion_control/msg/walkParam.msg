@@ -1,0 +1,4 @@
+float64 step_distance
+float64 step_height
+float64 step_periode
+float64 turn_angle

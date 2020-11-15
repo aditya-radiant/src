@@ -7,8 +7,9 @@ from inverse_kinematics.msg import IKTarget, FullBodyIK
 
 l1 = 13.9
 l2 = 14.6
-offset = 13
+offset = 12
 offsetSide = 5
+cam_pitch = 180
 
 dynamixelPosList_pub = rospy.Publisher('set_position', DynamixelPosList, queue_size=10)
 
@@ -108,6 +109,10 @@ def full_body_ik_handler(data):
     left_leg_id = [10, 12, 14, 16, 18, 8]
 
     dataPub = DynamixelPosList()
+    dynamixelPos = DynamixelPos()
+    dynamixelPos.id = 20
+    dynamixelPos.position = cam_pitch
+    dataPub.dynamixel.append(dynamixelPos)
     for idx in range(6):
         dynamixelPos = DynamixelPos()
         dynamixelPos.id = right_leg_id[idx]
@@ -122,12 +127,18 @@ def full_body_ik_handler(data):
     dynamixelPosList_pub.publish(dataPub)
     
 
+def setCamPitchHandler(data):
+    global cam_pitch
+    cam_pitch = data.data
+
+
 if __name__ == '__main__' :
     rospy.init_node('inverse_kinematics_node')
 
     rospy.Subscriber('r_leg_target', IKTarget, r_leg_ik_handler)
     rospy.Subscriber('l_leg_target', IKTarget, l_leg_ik_handler)
     rospy.Subscriber('full_body_target', FullBodyIK, full_body_ik_handler)
+    rospy.Subscriber('set_camPitch', UInt16, setCamPitchHandler)
 
     rate = rospy.Rate(10)
     rospy.spin()
