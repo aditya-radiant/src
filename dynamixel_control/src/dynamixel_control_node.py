@@ -52,7 +52,6 @@ def enTorqueHandler(data):
 def setPositionHandler(data):
     for dxl in data.dynamixel:
         pwm = dxl.position * 4095 / 360
-        rospy.loginfo("[ID:%03d] %d" % (dxl.id, pwm))
         data_send = list(struct.unpack('4B', struct.pack("I", limitCheck(dxl.id, pwm))))
         dxl_addparam_result = PosSyncWrite.addParam(dxl.id, data_send)
         if dxl_addparam_result != True:

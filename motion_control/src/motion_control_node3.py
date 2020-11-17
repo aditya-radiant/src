@@ -12,7 +12,7 @@ fullBodyIK_pub = rospy.Publisher('full_body_target', FullBodyIK, queue_size=10)
 
 walk_height = 5.0   	# cm
 step_periode = 1.0  	# second
-rate = 60.0    	# hz
+rate = 120.0    	# hz
 walk_distance = 8.0 	# cm
 swap_distance = 3.0 	# cm
 rotate_angle = 15.0 	# degree
@@ -38,8 +38,14 @@ def walk():
 
         if (0 <= t < dsp_1_end):
             x = walkSin(t, dsp_ratio * step_periode * 2, 0 + dsp_ratio * step_periode/4, swap_distance/2, swap_distance/2)
+	    if (t < dsp_1_end/4):
+		z = 0
+	    else:
+		z = walkSin(t - dsp_1_end/4, ssp_ratio * step_periode, 0 + dsp_ratio * step_periode/4, walk_height/2, walk_height/2)
+            y = (t - dsp_1_end) / (ssp_ratio * step_periode) * walk_distance
             dataPub.right_leg.x = x
-            dataPub.right_leg.z = 26.0
+            dataPub.right_leg.z = 26.0 - z
+            dataPub.right_leg.y = y
             dataPub.left_leg.x = -x
             dataPub.left_leg.z = 26.0
 

@@ -51,6 +51,7 @@ add_message_files(
   FILES
   IKTarget.msg
   FullBodyIK.msg
+  offset.msg
 )
 
 ## Generate services in the 'srv' folder

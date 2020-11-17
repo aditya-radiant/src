@@ -2,12 +2,13 @@
 import rospy
 import math
 import numpy as np
+from std_msgs.msg import UInt16
 from dynamixel_control.msg import DynamixelPos, DynamixelPosList
-from inverse_kinematics.msg import IKTarget, FullBodyIK
+from inverse_kinematics.msg import IKTarget, FullBodyIK, offset
 
 l1 = 13.9
 l2 = 14.6
-offset = 12
+offsetFront = 12
 offsetSide = 5
 cam_pitch = 180
 
@@ -36,7 +37,7 @@ def r_leg_ik(koordinatX, koordinatY,  koordinatZ, rotate):
         tetha4 = tetha3 + tetha2 - 90
         tetha6 = rotate
 	
-        return [tetha1+180+offsetSide, 90-offset+tetha2, -tetha3+180, tetha4+180, tetha5+180+offsetSide, tetha6+180]
+        return [tetha1+180+offsetSide, 90-offsetFront+tetha2, -tetha3+180, tetha4+180, tetha5+180+offsetSide, tetha6+180]
 
     except ValueError:
         rospy.logerr('[IK_Target] Value Error')
@@ -65,7 +66,7 @@ def l_leg_ik(koordinatX, koordinatY,  koordinatZ, rotate):
         tetha4 = tetha3 + tetha2 - 90
         tetha6 = rotate
 
-        return [-tetha1+180-offsetSide, 270+offset-tetha2, tetha3+180, -tetha4+180, -tetha5+180-offsetSide, -tetha6+180]
+        return [-tetha1+180-offsetSide, 270+offsetFront-tetha2, tetha3+180, -tetha4+180, -tetha5+180-offsetSide, -tetha6+180]
 
     except ValueError:
         rospy.logerr('[IK_Target] Value Error')
@@ -109,10 +110,10 @@ def full_body_ik_handler(data):
     left_leg_id = [10, 12, 14, 16, 18, 8]
 
     dataPub = DynamixelPosList()
-    dynamixelPos = DynamixelPos()
-    dynamixelPos.id = 20
-    dynamixelPos.position = cam_pitch
-    dataPub.dynamixel.append(dynamixelPos)
+    # dynamixelPos = DynamixelPos()
+    # dynamixelPos.id = 20
+    # dynamixelPos.position = cam_pitch
+    # dataPub.dynamixel.append(dynamixelPos)
     for idx in range(6):
         dynamixelPos = DynamixelPos()
         dynamixelPos.id = right_leg_id[idx]
@@ -132,6 +133,12 @@ def setCamPitchHandler(data):
     cam_pitch = data.data
 
 
+def setOffsetHandler(data):
+    global offsetSide, offsetFront
+    offsetFront = data.front_offset
+    offsetSide = data.side_offset
+
+
 if __name__ == '__main__' :
     rospy.init_node('inverse_kinematics_node')
 
@@ -139,6 +146,7 @@ if __name__ == '__main__' :
     rospy.Subscriber('l_leg_target', IKTarget, l_leg_ik_handler)
     rospy.Subscriber('full_body_target', FullBodyIK, full_body_ik_handler)
     rospy.Subscriber('set_camPitch', UInt16, setCamPitchHandler)
+    rospy.Subscriber('set_offset', offset, setOffsetHandler)
 
     rate = rospy.Rate(10)
     rospy.spin()

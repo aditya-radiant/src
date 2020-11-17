@@ -10,5 +10,4 @@ before use this repo, config this code into your computer [configuration](https:
 - [x] Path Planning Std
 - [x] Path Planning Walking Gait 
 - [x] Uji Jalan
-- [x] Perbanyak gait .... masih proses
 - [ ] Running Test
