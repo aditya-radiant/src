@@ -6,9 +6,9 @@
 5. `catkin_make`
 6. `gedit ~/.basrhc`
 
-7. in the botton add : \
+7. in the bottom row add : \
         ```
-        source /opt/ros/kinetic/setup.bash
+        source /opt/ros/[ros distribution]/setup.bash
         ``` \
         ```
         source /home/[user]/Bascorro_ws/devel/setup.bash
